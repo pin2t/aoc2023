@@ -3,24 +3,19 @@ import kotlin.collections.ArrayList
 
 var n = 0
 var n2 = 0
-val spell = arrayOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+val numbers = arrayOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 val scanner = Scanner(System.`in`)
+val digits = ArrayList<Int>()
 while (scanner.hasNext()) {
     val line = scanner.nextLine()
-    val digits = ArrayList<Int>()
-    val digits2 = ArrayList<Int>()
-    for (i in line.indices) {
-        if (line[i].isDigit()) {
-            digits.add(line[i].minus('0'))
-            digits2.add(line[i].minus('0'))
-        }
-        for (j in spell.indices) {
-            if (line.substring(i).startsWith(spell[j])) {
-                digits2.add(j)
-            }
-        }
-    }
+    digits.clear()
+    line.forEach { if (it.isDigit()) digits.add(it.minus('0')) }
     n += digits.first() * 10 + digits.last()
-    n2 += digits2.first() * 10 + digits2.last()
+    digits.clear()
+    line.forEachIndexed { index, c ->
+        if (c.isDigit()) digits.add(c.minus('0'))
+        numbers.forEachIndexed { spellIndex, s -> if (line.substring(index).startsWith(numbers[spellIndex])) digits.add(spellIndex) }
+    }
+    n2 += digits.first() * 10 + digits.last()
 }
 println("$n $n2")
