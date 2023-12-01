@@ -14,7 +14,7 @@ while (scanner.hasNext()) {
     digits.clear()
     line.forEachIndexed { index, c ->
         if (c.isDigit()) digits.add(c.minus('0'))
-        numbers.forEachIndexed { spellIndex, s -> if (line.substring(index).startsWith(numbers[spellIndex])) digits.add(spellIndex) }
+        numbers.forEachIndexed { spellIndex, _ -> if (line.substring(index).startsWith(numbers[spellIndex])) digits.add(spellIndex) }
     }
     n2 += digits.first() * 10 + digits.last()
 }
