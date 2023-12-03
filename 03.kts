@@ -4,7 +4,6 @@ import kotlin.collections.ArrayList
 data class PartNumber(val start: Pair<Int, Int>, val end: Pair<Int, Int>, val value: Int)
 
 val scanner = Scanner(System.`in`)
-var sum = 0
 val numbers = HashSet<PartNumber>()
 val symbols = HashSet<Pair<Int, Int>>()
 val stars = HashSet<Pair<Int, Int>>()
@@ -38,19 +37,12 @@ fun around(pos: Pair<Int, Int>, symbols: Set<Pair<Int, Int>>): Boolean {
             symbols.contains(Pair(pos.first + 1, pos.second + 1))
 }
 
-for (num in numbers) {
-    if (around(num.start, symbols) || around(num.end, symbols)) sum += num.value
-}
 var ratios = 0
 for (star in stars) {
-    val naround = ArrayList<PartNumber>()
-    for (num in numbers) {
-        if (around(num.start, Collections.singleton(star)) || around(num.end, Collections.singleton(star))) {
-            naround.add(num)
-        }
-    }
+    val naround = numbers.filter { around(it.start, Collections.singleton(star)) || around(it.end, Collections.singleton(star)) }.toList()
     if (naround.size == 2) {
         ratios += naround[0].value * naround[1].value
     }
 }
+var sum = numbers.filter { around(it.start, symbols) || around(it.end, symbols) }.sumOf { it.value }
 println("$sum $ratios")
