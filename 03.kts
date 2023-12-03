@@ -10,7 +10,7 @@ val stars = HashSet<Pair<Int, Int>>()
 var y = 0
 while (scanner.hasNext()) {
     val line = scanner.nextLine()
-    line.forEachIndexed { x, c -> if (c != '.') symbols.add(Pair(x, y)) }
+    line.forEachIndexed { x, c -> if (c != '.' && !c.isDigit()) symbols.add(Pair(x, y)) }
     line.forEachIndexed { x, c -> if (c == '*') stars.add(Pair(x, y)) }
     var x = 0
     while (x < line.length) {
@@ -19,8 +19,8 @@ while (scanner.hasNext()) {
             x++
             while (x < line.length && line[x].isDigit()) x++
             numbers.add(PartNumber(start, Pair(x - 1, y), line.substring(start.first, x).toInt()))
-        } else
-            x++
+        }
+        x++
     }
     y++
 }
