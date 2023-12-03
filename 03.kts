@@ -26,11 +26,8 @@ while (scanner.hasNext()) {
 }
 
 fun around(pos: Pair<Int, Int>, symbols: Set<Pair<Int, Int>>): Boolean {
-    return symbols.contains(Pair(pos.first - 1, pos.second - 1)) || symbols.contains(Pair(pos.first - 1, pos.second)) ||
-            symbols.contains(Pair(pos.first - 1, pos.second + 1)) ||
-            symbols.contains(Pair(pos.first, pos.second - 1)) || symbols.contains(Pair(pos.first, pos.second + 1)) ||
-            symbols.contains(Pair(pos.first + 1, pos.second - 1)) || symbols.contains(Pair(pos.first + 1, pos.second)) ||
-            symbols.contains(Pair(pos.first + 1, pos.second + 1))
+    fun contains(dx: Int, dy: Int): Boolean = symbols.contains(Pair(pos.first + dx, pos.second + dy))
+    return contains(-1, -1) || contains(-1, 0) || contains(-1, 1) || contains(0, -1) || contains(0, 1) || contains(1, -1) || contains(1, 0) || contains(1, 1)
 }
 
 var ratios = 0
