@@ -24,24 +24,24 @@ func (r _range) contains(value int64) bool {
 func (r _range) _map(m []mapping) []_range {
 	var result []_range
 	mapped := false
+	addMapped := func(mr _range) {
+		result = append(result, mr)
+		mapped = true
+	}
 	for _, mr := range m {
 		offset := mr.to - mr.from.first
 		if mr.from.contains(r.first) && mr.from.contains(r.last) {
-			result = append(result, _range{r.first + offset, r.last + offset})
-			mapped = true
+			addMapped(_range{r.first + offset, r.last + offset})
 		} else if mr.from.contains(r.first) {
-			result = append(result, _range{r.first + offset, mr.from.last + offset})
 			result = append(result, _range{mr.from.last + 1, r.last}._map(m)...)
-			mapped = true
+			addMapped(_range{r.first + offset, mr.from.last + offset})
 		} else if mr.from.contains(r.last) {
-			result = append(result, _range{mr.from.first + offset, r.last + offset})
 			result = append(result, _range{r.first, mr.from.first - 1}._map(m)...)
-			mapped = true
+			addMapped(_range{mr.from.first + offset, r.last + offset})
 		} else if r.contains(mr.from.first) && r.contains(mr.from.last) {
 			result = append(result, _range{r.first, mr.from.first - 1}._map(m)...)
 			result = append(result, _range{mr.from.last + 1, r.last}._map(m)...)
-			result = append(result, _range{mr.from.first + offset, mr.from.last + offset})
-			mapped = true
+			addMapped(_range{mr.from.first + offset, mr.from.last + offset})
 		}
 		if mapped {
 			break
