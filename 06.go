@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-// x * (t - x) = d solutions are x1 = t / 2 - sqrt(t * t - 4 * d) / 2 and x1 = t / 2 + sqrt(t * t - 4 * d) / 2
+// x * (t - x) = d solutions are x1 = t / 2 - sqrt(t * t - 4 * d) / 2 and x2 = t / 2 + sqrt(t * t - 4 * d) / 2
 // the winning number of games is difference x2 - x1
 func main() {
 	var times, distances [4]int
