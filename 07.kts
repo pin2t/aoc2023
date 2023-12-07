@@ -46,12 +46,6 @@ data class BestHand(val hand: Hand): Comparable<BestHand> {
 val input = System.`in`.bufferedReader().readLines()
 val hands = ArrayList<Pair<Hand, Int>>(input.map {Pair(Hand(it.split(" ")[0]), it.split(" ")[1].toInt()) }.toList()).sortedBy { it.first }
 val besthands = ArrayList<Pair<BestHand, Int>>(input.map {Pair(BestHand(it.split(" ")[0]), it.split(" ")[1].toInt()) }.toList()).sortedBy { it.first }
-var total = 0
-for (i in hands.indices) {
-    total += (i + 1) * hands[i].second
-}
-var bestTotal = 0
-for (i in besthands.indices) {
-    bestTotal += (i + 1) * besthands[i].second
-}
+val total = hands.indices.map { (it + 1) * hands[it].second }.reduce(Int::plus)
+val bestTotal = besthands.indices.map { (it + 1) * hands[it].second }.reduce(Int::plus)
 println("$total $bestTotal")
