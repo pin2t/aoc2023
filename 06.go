@@ -23,8 +23,15 @@ func main() {
 			ways *= int(x2) - int(x1)
 		}
 	}
-	t, _ := strconv.ParseInt(strconv.Itoa(times[0])+strconv.Itoa(times[1])+strconv.Itoa(times[2])+strconv.Itoa(times[3]), 10, 64)
-	d, _ := strconv.ParseInt(strconv.Itoa(distances[0])+strconv.Itoa(distances[1])+strconv.Itoa(distances[2])+strconv.Itoa(distances[3]), 10, 64)
+	i := func(s string) int64 {
+		result, _ := strconv.ParseInt(s, 10, 64)
+		return result
+	}
+	s := func(i int) string {
+		return strconv.Itoa(i)
+	}
+	t := i(s(times[0]) + s(times[1]) + s(times[2]) + s(times[3]))
+	d := i(s(distances[0]) + s(distances[1]) + s(distances[2]) + s(distances[3]))
 	x1 := (float64(t) - math.Sqrt(float64(t*t-4*d))) / 2
 	x2 := (float64(t) + math.Sqrt(float64(t*t-4*d))) / 2
 	fmt.Println(ways, int(x2)-int(x1))
