@@ -17,20 +17,13 @@ const (
 	fiveOfKind  = 7
 )
 
-type hand struct {
-	cards [5]byte
-	bid   int
-}
+type hand struct { cards [5]byte; bid int }
 
 func (h hand) _type() int {
 	var m = map[byte]int{}
-	for i := 0; i < 5; i++ {
-		m[h.cards[i]]++
-	}
+	for i := 0; i < 5; i++ { m[h.cards[i]]++ }
 	var counts []int
-	for _, v := range m {
-		counts = append(counts, v)
-	}
+	for _, v := range m { counts = append(counts, v) }
 	sort.Ints(counts)
 	if len(counts) == 1 {
 		return fiveOfKind
