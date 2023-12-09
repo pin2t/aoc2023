@@ -6,7 +6,7 @@ import "regexp"
 import "fmt"
 
 func gcd(a int64, b int64) int64 {
-    if (b == 0) { return a }
+    if b == 0 { return a }
     return gcd(b, a % b)
 }
 
@@ -34,7 +34,7 @@ func main() {
 		return int64(i)
 	}
 	var result1, result2 = steps("AAA", func (node string) bool { return node == "ZZZ" }), int64(1)
-	for node, _ := range paths {
+	for node := range paths {
 		if node[2] == 'A' { result2 = lcm(result2, steps(node, func (node string) bool { return node[2] == 'Z' })) }
 	}
 	fmt.Println(result1, result2)
