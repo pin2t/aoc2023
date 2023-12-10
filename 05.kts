@@ -14,7 +14,7 @@ while (scanner.hasNext()) {
             val l = scanner.nextLine()
             if (l == "") { break }
             val mm = number.findAll(l).map { it.value.toLong() }.toList()
-            m.add(Pair(LongRange(mm[1], mm[1] + mm[2] - 1), mm[0]))
+            m.add(Pair((mm[1]..<(mm[1] + mm[2])), mm[0]))
         }
         mappings.add(m)
     }
@@ -34,7 +34,7 @@ for (seed in seeds) {
 }
 var ranges = ArrayList<LongRange>()
 for (i in 0..<seeds.size step 2) {
-    ranges.add(LongRange(seeds[i], seeds[i] + seeds[i + 1] - 1))
+    ranges.add((seeds[i]..<seeds[i] + seeds[i + 1]))
 }
 for (mapping in mappings) {
     val mapped = ArrayList<LongRange>()
@@ -57,9 +57,9 @@ for (mapping in mappings) {
             }
             if (mr.isPresent) break
         }
-        if (mr.isPresent) mapped.add(mr.get()) else mapped.add(rr)
+        mapped.add(if (mr.isPresent) mr.get() else rr)
     }
     for (r in ranges) map(r)
     ranges = mapped
 }
-println("${minLocation} ${ranges.minOf { it.first }}")
+println(listOf(minLocation, ranges.minOf { it.first }))
