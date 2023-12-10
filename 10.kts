@@ -14,11 +14,15 @@ for (r in tiles.indices) {
 }
 var steps = 0
 var pos = start
-var dir = Pair(1, 0)
-if ("-J7".contains(tile(pos.first + 1, pos.second))) dir = Pair(1, 0)
-else if ("|JL".contains(tile(pos.first, pos.second + 1))) dir = Pair(0, 1)
-else if ("-LF".contains(tile(pos.first - 1, pos.second))) dir = Pair(-1, 0)
-else if ("|F7".contains(tile(pos.first, pos.second - 1))) dir = Pair(0, -1)
+fun tile(pos: Pair<Int, Int>, dx: Int, dy: Int): Char {
+    return tile(pos.first + dx, pos.second + dy)
+}
+val UP = Pair(0, -1); val DOWN = Pair(0, 1); val LEFT = Pair(-1, 0); val RIGHT = Pair(1, 0)
+var dir = RIGHT
+if ("-J7".contains(tile(pos, 1, 0))) dir = RIGHT
+else if ("|JL".contains(tile(pos, 0, 1))) dir = DOWN
+else if ("-LF".contains(tile(pos, -1, 0))) dir = LEFT
+else if ("|F7".contains(tile(pos, 0, -1))) dir = UP
 val loop = HashSet<Pair<Int, Int>>()
 val loop2 = HashSet<Pair<Int, Int>>()
 do {
@@ -26,18 +30,11 @@ do {
     loop2.add(Pair(pos.first * 2, pos.second * 2))
     pos = Pair(pos.first + dir.first, pos.second + dir.second)
     steps++
-    if (tile(pos.first, pos.second) == 'F') {
-        if (dir.first == -1) dir = Pair(0, 1)
-        else if (dir.second == -1) dir = Pair(1, 0)
-    } else if (tile(pos.first, pos.second) == 'L') {
-        if (dir.first == -1) dir = Pair(0, -1)
-        else if (dir.second == 1) dir = Pair(1, 0)
-    } else if (tile(pos.first, pos.second) == '7') {
-        if (dir.first == 1) dir = Pair(0, 1)
-        else if (dir.second == -1) dir = Pair(-1, 0)
-    } else if (tile(pos.first, pos.second) == 'J') {
-        if (dir.first == 1) dir = Pair(0, -1)
-        else if (dir.second == 1) dir = Pair(-1, 0)
+    when (tile(pos, 0, 0)) {
+        'F' -> if (dir == LEFT) dir = DOWN else if (dir == UP) dir = RIGHT
+        'L' -> if (dir == LEFT) dir = UP else if (dir == DOWN) dir = RIGHT
+        '7' -> if (dir == RIGHT) dir = DOWN else if (dir == UP) dir = LEFT
+        'J' -> if (dir == RIGHT) dir = UP else if (dir == DOWN) dir = LEFT
     }
 } while (pos != start)
 for (r in 0..<(tiles.size * 2)) {
