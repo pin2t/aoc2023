@@ -25,7 +25,7 @@ for (c in cols downTo 0) {
         galaxies2.forEach { if (it.col > c) it.col+=999999 }
     }
 }
-var sum: Long = 0
+var sum: Long = 0;
 var sum2: Long = 0
 for (i in 0..<(galaxies.size - 1)) {
     for (j in i..<galaxies.size) {
