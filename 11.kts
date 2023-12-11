@@ -11,7 +11,7 @@ while (scanner.hasNext()) {
     scanner.nextLine().forEachIndexed { index, c -> if (c == '#') galaxies.add(Galaxy(index.toLong(), rows)) }
     rows++
 }
-var cols: Long = galaxies.maxOf { it.col }
+val cols: Long = galaxies.maxOf { it.col }
 val galaxies2 = galaxies.map { it.copy() }
 for (r in rows downTo 0) {
     if (galaxies.all { it.row != r }) {
