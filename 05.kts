@@ -12,7 +12,7 @@ while (scanner.hasNext()) {
         val m = ArrayList<Pair<LongRange, Long>>()
         while (scanner.hasNext()) {
             val l = scanner.nextLine()
-            if (l == "") { break }
+            if (l == "") break
             val mm = number.findAll(l).map { it.value.toLong() }.toList()
             m.add(Pair((mm[1]..<(mm[1] + mm[2])), mm[0]))
         }
@@ -43,17 +43,17 @@ for (mapping in mappings) {
         for (r in mapping) {
             val offset = r.second - r.first.first
             if (r.first.contains(rr.first) && r.first.contains(rr.last)) {
-                mr = Optional.of(LongRange(rr.first + offset, rr.last + offset))
+                mr = Optional.of(((rr.first + offset)..(rr.last + offset)))
             } else if (r.first.contains(rr.first)) {
-                mr = Optional.of(LongRange(rr.first + offset, r.first.last + offset))
-                map(LongRange(r.first.last + 1, rr.last))
+                mr = Optional.of(((rr.first + offset)..(r.first.last + offset)))
+                map(((r.first.last + 1)..rr.last))
             } else if (r.first.contains(rr.last)) {
-                mr = Optional.of(LongRange(r.first.first + offset, rr.last + offset))
-                map(LongRange(rr.first, r.first.first - 1))
+                mr = Optional.of(((r.first.first + offset)..(rr.last + offset)))
+                map((rr.first..(r.first.first - 1)))
             } else if (rr.contains(r.first.first) && rr.contains(r.first.last)) {
-                map(LongRange(rr.first, r.first.first - 1))
-                map(LongRange(r.first.last + 1, rr.last))
-                mr = Optional.of(LongRange(r.first.first + offset, r.first.last + offset))
+                map((rr.first..(r.first.first - 1)))
+                map(((r.first.last + 1)..rr.last))
+                mr = Optional.of(((r.first.first + offset)..(r.first.last + offset)))
             }
             if (mr.isPresent) break
         }
