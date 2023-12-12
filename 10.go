@@ -4,10 +4,6 @@ import "bufio"
 import "os"
 import "fmt"
 
-//      .*.      ...      .*.      .*.      ...      ...      ...      .*.
-// | -> .*. - -> *** L -> .** J -> **. 7 -> **. F -> .** . -> ... S -> ***
-//      .*.      ...      ...      ...      .*.      .*.      ...      .*.
-
 type pos struct { col, row int }
 var up = pos{0, -1}; var right = pos{1, 0}; var down = pos{0, 1}; var left = pos{-1, 0}
 
@@ -17,6 +13,10 @@ func main() {
 	var start pos
 	var grid, loop = make(map[pos]bool, 100000), make(map[pos]bool, 100000)
 	var set = func(c int, r int) { grid[pos{c, r}] = true; }
+
+	//      .*.      ...      .*.      .*.      ...      ...      ...      .*.
+	// | -> .*. - -> *** L -> .** J -> **. 7 -> **. F -> .** . -> ... S -> ***
+	//      .*.      ...      ...      ...      .*.      .*.      ...      .*.
 	for scanner.Scan() {
 		cols = len(scanner.Text())
 		for c, tile := range scanner.Text() {
