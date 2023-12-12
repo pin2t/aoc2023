@@ -4,11 +4,11 @@ var scanner = Scanner(System.`in`)
 var sum: Long = 0; var sum2: Long = 0
 while (scanner.hasNext()) {
     val line = scanner.nextLine()
-    val springs = line.split(' ')[0]
-    val sizes = ArrayList<Int>(line.split(' ')[1].split(',').map { it.toInt() }.toList())
+    var springs = line.split(' ')[0]
+    var sizes = ArrayList<Int>(line.split(' ')[1].split(',').map { it.toInt() }.toList())
     var matchCount: Long = 0
     val cache = HashMap<Pair<Int, Int>, Long>()
-    fun matchAll(springs: String, sizes: List<Int>, a: String, i: Int) {
+    fun matchAll(a: String, i: Int) {
         if (a.length <= springs.length && cache.contains(Pair(a.length, i))) {
             matchCount += cache.get(Pair(a.length, i))!!
             return
@@ -32,22 +32,20 @@ while (scanner.hasNext()) {
                 aa.forEachIndexed { index, c -> matched = matched && (c == springs[index] || springs[index] == '?') }
                 if (matched) {
                     var prev = matchCount
-                    matchAll(springs, sizes, aa, i + 1)
+                    matchAll(aa, i + 1)
                     cache.put(Pair(aa.length, i + 1), matchCount - prev)
                 }
             }
         }
     }
-    matchAll(springs, sizes, "", 0)
+    matchAll("", 0)
     sum += matchCount
     matchCount = 0
     cache.clear()
-    val sizes2 = ArrayList<Int>(sizes)
-    sizes2.addAll(sizes)
-    sizes2.addAll(sizes)
-    sizes2.addAll(sizes)
-    sizes2.addAll(sizes)
-    matchAll(springs + "?" + springs + "?" + springs + "?" + springs + "?" + springs, sizes2, "", 0)
+    val sizes2 = ArrayList<Int>(sizes);
+    sizes.addAll(sizes2); sizes.addAll(sizes2); sizes.addAll(sizes2); sizes.addAll(sizes2)
+    springs = "$springs?$springs?$springs?$springs?$springs"
+    matchAll("", 0)
     sum2 += matchCount
 }
 println(listOf(sum, sum2))
