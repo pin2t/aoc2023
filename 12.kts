@@ -8,9 +8,8 @@ fun matched(prefix: String): Boolean {
 }
 fun matches(prefix: String, group: Int): Long {
     if (prefix.length > springs.length) return 0
-    if (cache.contains(Pair(prefix.length, group))) {
-        return cache[Pair(prefix.length, group)]!!
-    }
+    val key = Pair(prefix.length, group)
+    if (cache.contains(key)) return cache[key]!!
     if (group == sizes.size) {
         return if (matched(prefix + ".".repeat(springs.length - prefix.length))) 1 else 0
     }
@@ -19,9 +18,11 @@ fun matches(prefix: String, group: Int): Long {
         var p = prefix;
         if (group > 0) p += "."
         p += ".".repeat(i) + "#".repeat(sizes[group])
-        if (p.length <= springs.length && matched(p)) result += matches(p, group + 1)
+        if (p.length <= springs.length && matched(p)) {
+            result += matches(p, group + 1)
+        }
     }
-    cache[Pair(prefix.length, group)] = result
+    cache[key] = result
     return result
 }
 var sum: Long = 0; var sum2: Long = 0
@@ -32,10 +33,10 @@ while (scanner.hasNext()) {
     sizes = ArrayList(line.split(' ')[1].split(',').map { it.toInt() }.toList())
     cache.clear()
     sum += matches("", 0)
-    cache.clear()
+    springs = "$springs?$springs?$springs?$springs?$springs"
     val sizes2 = ArrayList<Int>(sizes);
     sizes.addAll(sizes2); sizes.addAll(sizes2); sizes.addAll(sizes2); sizes.addAll(sizes2)
-    springs = "$springs?$springs?$springs?$springs?$springs"
+    cache.clear()
     sum2 += matches("", 0)
 }
 println(listOf(sum, sum2))
