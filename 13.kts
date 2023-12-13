@@ -2,51 +2,25 @@ import java.util.*
 import kotlin.collections.HashSet
 import kotlin.math.min
 
-data class Grid(val rocks: HashSet<Pair<Int, Int>>) {
-    fun cols(): Int = rocks.maxOf { it.first } + 1
-    fun rows(): Int = rocks.maxOf { it.second } + 1
-
-    fun colRef(prev: Int): Int {
-        for (i in 0..<(cols() - 1)) {
-            val width = min(i + 1, cols() - i - 1)
-            var reflected = true
-            for (r in 0..<rows()) {
-                for (j in 1..width) {
-                    if (rocks.contains(Pair(i + 1 - j, r)) != rocks.contains(Pair(i + j, r))) {
-                        reflected = false
-                        break
-                    }
+fun reflection(rocks: Set<Pair<Int, Int>>, prev: Int): Int {
+    val cols = rocks.maxOf { it.first } + 1; val rows = rocks.maxOf { it.second } + 1
+    for (i in 0..<(rows - 1)) {
+        val height = min(i + 1, rows - i - 1)
+        var reflected = true
+        for (c in 0..<cols) {
+            for (j in 1..height) {
+                if (rocks.contains(Pair(c, i + 1 - j)) != rocks.contains(Pair(c, i + j))) {
+                    reflected = false
+                    break
                 }
             }
-            if (reflected && (i + 1) != prev % 100) return i + 1
         }
-        return 0
+        if (reflected && (i + 1) != prev) return i + 1
     }
-
-    fun rowRef(prev: Int): Int {
-        for (i in 0..<(rows() - 1)) {
-            val height = min(i + 1, rows() - i - 1)
-            var reflected = true
-            for (c in 0..<cols()) {
-                for (j in 1..height) {
-                    if (rocks.contains(Pair(c, i + 1 - j)) != rocks.contains(Pair(c, i + j))) {
-                        reflected = false
-                        break
-                    }
-                }
-            }
-            if (reflected && (i + 1) != prev / 100) return i + 1
-        }
-        return 0
-    }
-
-    fun reflection(prev: Int): Int {
-        return colRef(prev) + rowRef(prev) * 100
-    }
+    return 0
 }
 val scanner = Scanner(System.`in`)
-var result = 0
-var result2 = 0
+var result = 0; var result2 = 0
 while (scanner.hasNext()) {
     val rocks = HashSet<Pair<Int, Int>>()
     var rows = 0
@@ -56,31 +30,29 @@ while (scanner.hasNext()) {
         line.forEachIndexed { index, c -> if (c == '#') rocks.add(Pair(index, rows)) }
         rows++
     }
-    val grid = Grid(rocks)
-    result += grid.reflection(0)
-    fun otherReflection(): Int {
-        val prev = grid.reflection(0)
-        for (r in 0..<grid.rows()) {
-            for (c in 0..<grid.cols()) {
-                val fixed = HashSet(grid.rocks); fixed.add(Pair(c, r))
-                val or = Grid(fixed).reflection(prev)
-                if (or != 0 && or != prev) {
-                    if (or / 100 != prev / 100) return or - (or % 100)
-                    if (or % 100 != prev % 100) return or % 100
-                }
-            }
-        }
-        for (r in grid.rocks) {
-            val fixed = HashSet(grid.rocks);
-            fixed.remove(r)
-            val or = Grid(fixed).reflection(prev)
-            if (or != 0 && or != prev) {
-                if (or / 100 != prev / 100) return or - (or % 100)
-                if (or % 100 != prev % 100) return or % 100
-            }
-        }
-        return 0
+    fun ref(rocks: Set<Pair<Int, Int>>, prev: Int): Int {
+        var result = 100 * reflection(rocks, prev / 100)
+        if (result == 0) result = reflection(rocks.map { Pair(it.second, it.first) }.toSet(), prev % 100)
+        return result
     }
-    result2 += otherReflection()
+    val prev = ref(rocks, 0)
+    result += prev
+    var other = 0
+    for (r in 0..<(rocks.maxOf { it.second } + 1)) {
+        for (c in 0..<(rocks.maxOf { it.first } + 1)) {
+            val fixed = HashSet(rocks);
+            if (!fixed.add(Pair(c, r))) continue
+            other = ref(fixed, prev)
+            if (other != 0) break
+        }
+        if (other != 0) break
+    }
+    for (r in rocks) {
+        val fixed = HashSet(rocks);
+        fixed.remove(r)
+        other = ref(fixed, prev)
+        if (other != 0) break
+    }
+    result2 += other
 }
 println(listOf(result, result2))
