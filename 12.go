@@ -48,7 +48,7 @@ func (sp springs) matches(prefix string, group int) int64 {
 		var p = prefix
 		if group > 0 { p += "." }
 		p += strings.Repeat(".", i) + strings.Repeat("#", sp.groups[group])
-		if (len(p) <= len(sp.pattern) && sp.matched(p)) { result += sp.matches(p, group + 1) }
+		if len(p) <= len(sp.pattern) && sp.matched(p) { result += sp.matches(p, group + 1) }
 	}
 	cache[k] = result
 	return result
