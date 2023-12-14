@@ -43,26 +43,25 @@ fun east() {
         }
     }
 }
-fun load(): Int {
-    var result = 0
-    platform.forEachIndexed { row, chars -> chars.forEachIndexed { col, c -> if (platform[row][col] == 'O') result += platform.size - row } }
+fun state(): List<Int> {
+    val result = ArrayList<Int>()
+    platform.forEachIndexed { row, chars -> chars.forEachIndexed { col, c -> if (c == 'O') result.add(platform.size - row) } }
     return result
 }
 north()
-var load1 = load()
+var load1 = state().sum()
 var cycle: Long = 0
 val states = HashMap<List<Int>, Long>()
 while (cycle < 1000000000) {
     north(); west(); south(); east()
     cycle++
-    val state = ArrayList<Int>()
-    platform.forEachIndexed { row, chars -> chars.forEachIndexed { col, c -> if (platform[row][col] == 'O') state.add(platform.size - row) } }
-    if (states.contains(state)) {
-        val len = cycle - states[state]!!
+    val s = state()
+    if (states.contains(s)) {
+        val len = cycle - states[s]!!
         while (cycle < 1000000000 - len) cycle += len
         states.clear()
     } else {
-        states[state] = cycle
+        states[s] = cycle
     }
 }
-println(listOf(load1, load()))
+println(listOf(load1, state().sum()))
