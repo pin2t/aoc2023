@@ -21,5 +21,5 @@ for (step in steps) {
     }
 }
 var total = 0
-boxes.forEachIndexed { bi, pairs -> pairs.forEachIndexed { li, pair -> total += (bi + 1) * (li + 1) * pair.second } }
+boxes.forEachIndexed { bi, lenses -> lenses.forEachIndexed { li, lens -> total += (bi + 1) * (li + 1) * lens.second } }
 println(listOf(steps.sumOf { hash(it) }, total))
