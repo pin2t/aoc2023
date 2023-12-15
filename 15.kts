@@ -8,17 +8,16 @@ val boxes = ArrayList<ArrayList<Pair<String, Int>>>()
 for (i in 0..255) boxes.add(ArrayList())
 for (step in steps) {
     if (step.contains('=')) {
-        val lens = step.split('=')[0]
-        val focus = step.split('=')[1].toInt()
-        val i = hash(lens)
-        if (boxes[i].any { it.first == lens }) {
-            boxes[i][boxes[i].indexOfFirst { it.first == lens }] = Pair(lens, focus)
+        val lens = Pair(step.split('=')[0], step.split('=')[1].toInt())
+        val i = hash(lens.first)
+        if (boxes[i].any { it.first == lens.first }) {
+            boxes[i][boxes[i].indexOfFirst { it.first == lens.first }] = lens
         } else {
-            boxes[i].add(Pair(lens, focus))
+            boxes[i].add(lens)
         }
     } else if (step.endsWith('-')) {
-        var lens = step.split('-')[0]
-        boxes[hash(lens)].removeIf { it.first == lens }
+        val label = step.split('-')[0]
+        boxes[hash(label)].removeIf { it.first == label }
     }
 }
 var total = 0
