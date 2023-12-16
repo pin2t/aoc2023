@@ -1,3 +1,4 @@
+import java.util.LinkedList
 import kotlin.math.max
 
 val grid = System.`in`.bufferedReader().lines().toList()
@@ -35,19 +36,17 @@ data class Beam(val pos: Pair<Int, Int>, val dir: Pair<Int, Int>) {
         throw IllegalStateException()
     }
     fun energized(): Int {
-        val queue = ArrayDeque<Beam>()
+        val queue = LinkedList<Beam>()
         val processed = HashSet<Beam>()
-        val energized = HashSet<Pair<Int, Int>>()
         queue.add(this)
         while (!queue.isEmpty()) {
             val beam = queue.removeFirst()
             if (!beam.inside() || processed.contains(beam))
                 continue
-            energized.add(beam.pos)
             processed.add(beam)
             queue.addAll(beam.move())
         }
-        return energized.size
+        return processed.map { it.pos }.toSet().size
     }
 }
 var result2 = 0
