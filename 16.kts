@@ -41,9 +41,7 @@ data class Beam(val pos: Pair<Int, Int>, val dir: Pair<Int, Int>) {
         queue.add(this)
         while (!queue.isEmpty()) {
             val beam = queue.removeFirst()
-            if (!beam.inside() || processed.contains(beam))
-                continue
-            processed.add(beam)
+            if (!beam.inside() || !processed.add(beam)) continue
             queue.addAll(beam.move())
         }
         return processed.map { it.pos }.toSet().size
