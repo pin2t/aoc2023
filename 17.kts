@@ -14,7 +14,7 @@ while (!queue.isEmpty()) {
         val np = Pair(s.pos.first + dir.first, s.pos.second + dir.second)
         if (!(np.first >= 0 && np.second >= 0 && np.first < grid[0].size && np.second < grid.size)) return
         val next = State(np, dir, s.loss + grid[np.second][np.first], s.straight + 1, ArrayList(s.path))
-        next.path.add(np);
+        next.path.add(np)
         if (losses.contains(next.pos) && next.loss >= losses[next.pos]!!.first) return
         if (s.dir == dir) {
             if (next.straight <= 3) {
