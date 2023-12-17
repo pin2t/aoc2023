@@ -33,13 +33,4 @@ while (!queue.isEmpty()) {
     move(up); move(right); move(down); move(left)
 }
 var res = losses.get(Pair(grid[0].size - 1, grid.size - 1))!!
-//for (r in 0..<grid.size) {
-//    for (c in 0..<grid[r].size) {
-//        if (res.second.contains(Pair(c, r)))
-//            print("*")
-//        else
-//            print(grid[r][c])
-//    }
-//    println()
-//}
 println(res.first)
