@@ -8,7 +8,7 @@ Kotlin script files
 
 Kotlin files (kotlin native compiler is used and should be installed)
 
-```./krun 16.kt < inputs/16.txt```
+```./kotlin-run 16.kt < inputs/16.txt```
 
 Go files
 
