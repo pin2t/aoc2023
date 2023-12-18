@@ -8,14 +8,10 @@ val loop = HashSet<Pair<Int, Int>>()
 val corners = ArrayList<Pair<Int, Int>>()
 fun dig(dir: Pair<Int, Int>, n: Int) {
     loop.add(pos)
-    for (i in 1..n) {
-        pos = Pair(pos.first + dir.first, pos.second + dir.second)
-        loop.add(pos)
-    }
+    for (i in 1..n) { pos = move(pos, dir); loop.add(pos) }
 }
-fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>): Pair<Int, Int> = Pair(pos.first + dir.first, pos.second + dir.second)
-fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>, n: Int): Pair<Int, Int> =
-    Pair(pos.first + dir.first * n, pos.second + dir.second * n)
+fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>, n: Int): Pair<Int, Int> = Pair(pos.first + dir.first * n, pos.second + dir.second * n)
+fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>): Pair<Int, Int> = move(pos, dir, 1)
 var loop2: Long = 1
 while (scanner.hasNext()) {
     val line = scanner.nextLine().split(' ')
@@ -24,11 +20,11 @@ while (scanner.hasNext()) {
         'U' -> dig(up, n); 'D' -> dig(down, n); 'L' -> dig(left, n); 'R' -> dig(right, n)
     }
     val n2 = line[2].substring(2, 7).toInt(16)
-    when (line[0][0]) {
-        'U' -> pos2 = move(pos2, up, n2)
-        'D' -> pos2 = move(pos2, down, n2)
-        'L' -> pos2 = move(pos2, left, n2)
-        'R' -> pos2 = move(pos2, right, n2)
+    when (line[2][7]) {
+        '3' -> pos2 = move(pos2, up, n2)
+        '1' -> pos2 = move(pos2, down, n2)
+        '2' -> pos2 = move(pos2, left, n2)
+        '0' -> pos2 = move(pos2, right, n2)
     }
     loop2 += n2
     corners.add(pos2)
