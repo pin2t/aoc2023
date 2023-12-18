@@ -3,10 +3,8 @@ import java.util.*
 fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>, n: Int): Pair<Int, Int> = Pair(pos.first + dir.first * n, pos.second + dir.second * n)
 val up = Pair(0, -1); val right = Pair(1, 0); val down = Pair(0, 1); val left = Pair(-1, 0)
 val scanner = Scanner(System.`in`)
-var pos = Pair(0, 0)
-var pos2 = Pair(0, 0)
-val corners = ArrayList<Pair<Int, Int>>()
-val corners2 = ArrayList<Pair<Int, Int>>()
+var pos = Pair(0, 0); var pos2 = Pair(0, 0)
+val corners = ArrayList<Pair<Int, Int>>(); val corners2 = ArrayList<Pair<Int, Int>>()
 var len1: Int = 0; var len2: Long = 0
 corners.add(Pair(0, 0))
 corners2.add(Pair(0, 0))
