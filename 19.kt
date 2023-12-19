@@ -55,7 +55,7 @@ fun main() {
             val matchedRanges = HashMap(ranges); val leftRanges = HashMap(ranges)
             when (rule[1]) {
                 "<" -> {
-                    matchedRanges[part] = ranges[part]!!.first..<(arg - 1)
+                    matchedRanges[part] = ranges[part]!!.first..<arg
                     leftRanges[part] = arg..ranges[part]!!.last
                 }
                 ">" -> {
