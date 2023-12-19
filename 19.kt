@@ -1,6 +1,3 @@
-import kotlin.math.max
-import kotlin.math.min
-
 data class Workflow (val rules: List<List<String>>, val default: String)
 
 fun main() {
