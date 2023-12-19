@@ -1,7 +1,7 @@
 import kotlin.math.max
 import kotlin.math.min
 
-data class Workflow (val rules: List<List<String>>, val result: String)
+data class Workflow (val rules: List<List<String>>, val default: String)
 
 fun main() {
     val workflows = HashMap<String, Workflow>()
@@ -30,13 +30,12 @@ fun main() {
         do {
             var matched = false
             for (rule in workflows[wf]!!.rules) {
-                when (rule[1]) {
-                    "<" -> matched = part[rule[0]]!! < rule[2].toInt()
-                    ">" -> matched = part[rule[0]]!! > rule[2].toInt()
-                }
+                val value = part[rule[0]]!!
+                val arg = rule[2].toInt()
+                matched = if (rule[1] == "<") value < arg else value > arg
                 if (matched) { wf = rule[3]; break }
             }
-            if (!matched) wf = workflows[wf]!!.result
+            if (!matched) wf = workflows[wf]!!.default
         } while (wf != "A" && wf != "R")
         if (wf == "A") res1 += part["x"]!! + part["m"]!! + part["a"]!! + part["s"]!!
     }
@@ -45,41 +44,39 @@ fun main() {
     while (!queue.isEmpty()) {
         val r = queue.removeFirst()
         if (r.first == "A") {
-            res2 += (r.second["x"]!!.last - r.second["x"]!!.first + 1).toLong() *
-                    (r.second["m"]!!.last - r.second["m"]!!.first + 1).toLong() *
-                    (r.second["a"]!!.last - r.second["a"]!!.first + 1).toLong() *
-                    (r.second["s"]!!.last - r.second["s"]!!.first + 1).toLong()
+            fun parts(name: String): Long = r.second[name]!!.count().toLong()
+            res2 += parts("x") * parts("m") * parts("a") * parts("s")
             continue
-        } else if (r.first == "R") continue
-        var matched = false
+        } else if (r.first == "R") {
+            continue
+        }
+        var matched = true
+        var ranges = r.second
         for (rule in workflows[r.first]!!.rules) {
+            val part = rule[0]
+            val arg = rule[2].toInt()
+            val matchedRanges = HashMap(ranges); val leftRanges = HashMap(ranges)
             when (rule[1]) {
                 "<" -> {
-                    if (r.second[rule[0]]!!.contains(rule[2].toInt())) {
-                        val ranges = HashMap(r.second)
-                        ranges[rule[0]] = ranges[rule[0]]!!.first..<min(ranges[rule[0]]!!.last, rule[2].toInt())
-                        queue.add(Pair(rule[3], ranges))
-                        val ranges2 = HashMap(r.second)
-                        ranges2[rule[0]] = min(ranges[rule[0]]!!.last, rule[2].toInt())..(ranges[rule[0]]!!.last)
-                        queue.add(Pair(r.first, ranges2))
-                        matched = true
-                    }
+                    matchedRanges[part] = ranges[part]!!.first..<(arg - 1)
+                    leftRanges[part] = arg..ranges[part]!!.last
                 }
                 ">" -> {
-                    if (r.second[rule[0]]!!.contains(rule[2].toInt())) {
-                        val ranges = HashMap(r.second)
-                        ranges[rule[0]] = max(ranges[rule[0]]!!.first, rule[2].toInt()) ..<(ranges[rule[0]]!!.last)
-                        queue.add(Pair(rule[3], ranges))
-                        val ranges2 = HashMap(r.second)
-                        ranges2[rule[0]] = (ranges[rule[0]]!!.last)..(max(ranges[rule[0]]!!.first, rule[2].toInt()))
-                        queue.add(Pair(r.first, ranges2))
-                        matched = true
-                    }
+                    matchedRanges[part] = (arg + 1)..ranges[part]!!.last
+                    leftRanges[part] = ranges[part]!!.first..arg
                 }
             }
-            if (matched) break
+            if (matchedRanges[part]!!.first <= matchedRanges[part]!!.last) {
+                queue.add(Pair(rule[3], matchedRanges))
+            }
+            if (leftRanges[part]!!.first <= leftRanges[part]!!.last) {
+                ranges = leftRanges
+            } else {
+                matched = false
+                break
+            }
         }
-        if (!matched) queue.add(Pair(workflows[r.first]!!.result, r.second))
+        if (matched) queue.add(Pair(workflows[r.first]!!.default, ranges))
     }
     println(listOf(res1, res2))
 }
