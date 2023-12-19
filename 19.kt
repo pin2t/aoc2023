@@ -1,4 +1,3 @@
-import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
@@ -46,10 +45,10 @@ fun main() {
     while (!queue.isEmpty()) {
         val r = queue.removeFirst()
         if (r.first == "A") {
-            res2 += (r.second["x"]!!.last - r.second["x"]!!.first).toLong() *
-                    (r.second["m"]!!.last - r.second["m"]!!.first).toLong() *
-                    (r.second["a"]!!.last - r.second["a"]!!.first).toLong() *
-                    (r.second["s"]!!.last - r.second["s"]!!.first).toLong()
+            res2 += (r.second["x"]!!.last - r.second["x"]!!.first + 1).toLong() *
+                    (r.second["m"]!!.last - r.second["m"]!!.first + 1).toLong() *
+                    (r.second["a"]!!.last - r.second["a"]!!.first + 1).toLong() *
+                    (r.second["s"]!!.last - r.second["s"]!!.first + 1).toLong()
             continue
         } else if (r.first == "R") continue
         var matched = false
