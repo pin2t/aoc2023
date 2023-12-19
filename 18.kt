@@ -1,15 +1,15 @@
-val up = Pair(0, -1); val right = Pair(1, 0); val down = Pair(0, 1); val left = Pair(-1, 0)
-
-fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>, n: Int): Pair<Int, Int> = Pair(pos.first + dir.first * n, pos.second + dir.second * n)
-
-fun result(len: Long, corners: List<Pair<Int, Int>>): Long {
-    var result: Long = 0
-    for (i in 1..<(corners.size - 1))
-        result += corners[i].first.toLong() * (corners[i + 1].second.toLong() - corners[i - 1].second.toLong())
-    return result / 2 + len / 2 + 1
-}
-
 fun main() {
+     val up = Pair(0, -1); val right = Pair(1, 0); val down = Pair(0, 1); val left = Pair(-1, 0)
+
+    fun move(pos: Pair<Int, Int>, dir: Pair<Int, Int>, n: Int): Pair<Int, Int> = Pair(pos.first + dir.first * n, pos.second + dir.second * n)
+
+    fun result(len: Long, corners: List<Pair<Int, Int>>): Long {
+        var result: Long = 0
+        for (i in 1..<(corners.size - 1))
+            result += corners[i].first.toLong() * (corners[i + 1].second.toLong() - corners[i - 1].second.toLong())
+        return result / 2 + len / 2 + 1
+    }
+
     var pos = Pair(0, 0); var pos2 = Pair(0, 0)
     val corners = ArrayList<Pair<Int, Int>>(); val corners2 = ArrayList<Pair<Int, Int>>()
     var len1 = 0; var len2: Long = 0
