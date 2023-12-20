@@ -41,8 +41,8 @@ fun main() {
     while (!queue.isEmpty()) {
         val r = queue.removeFirst()
         if (r.first == "A") {
-            fun parts(name: String): Long = r.second[name]!!.count().toLong()
-            res2 += parts("x") * parts("m") * parts("a") * parts("s")
+            fun count(category: String): Long = r.second[category]!!.count().toLong()
+            res2 += count("x") * count("m") * count("a") * count("s")
             continue
         } else if (r.first == "R") {
             continue
@@ -72,7 +72,7 @@ fun main() {
                 break
             }
         }
-        if (!ranges.isEmpty()) queue.add(Pair(workflows[r.first]!!.default, ranges))
+        if (ranges.isNotEmpty()) queue.add(Pair(workflows[r.first]!!.default, ranges))
     }
     println(listOf(res1, res2))
 }
