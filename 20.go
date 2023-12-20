@@ -105,15 +105,15 @@ func main() {
 			var p = pulses[0]
 			pulses = pulses[1:]
 			if mp, found := modules[p.to]; found {
-				if m, ok := mp.(*broadcaster); ok { m.process(p) }
-				if m, ok := mp.(*flip); ok { m.process(p) }
-				if m, ok := mp.(*conjunction); ok { m.process(p) }
+				if m, is := mp.(*broadcaster); is { m.process(p) }
+				if m, is := mp.(*flip); is { m.process(p) }
+				if m, is := mp.(*conjunction); is { m.process(p) }
 			}
 		}
 	}
 	for _, mi := range modules {
-		if m, ok := mi.(*conjunction); ok { m.reset() }
-		if m, ok := mi.(*flip); ok { m.reset() }
+		if m, is := mi.(*conjunction); is { m.reset() }
+		if m, is := mi.(*flip); is { m.reset() }
 	}
 	var cycles = make(map[string]int64)
 	var press = 1
@@ -135,9 +135,9 @@ func main() {
 				}
 			}
 			if mp, found := modules[p.to]; found {
-				if m, ok := mp.(*broadcaster); ok { m.process(p) }
-				if m, ok := mp.(*flip); ok { m.process(p) }
-				if m, ok := mp.(*conjunction); ok { m.process(p) }
+				if m, is := mp.(*broadcaster); is { m.process(p) }
+				if m, is := mp.(*flip); is { m.process(p) }
+				if m, is := mp.(*conjunction); is { m.process(p) }
 			}
 		}
 		press++
