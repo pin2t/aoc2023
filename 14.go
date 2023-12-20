@@ -47,7 +47,7 @@ func main() {
 		apply(func (c int, r int) {
             if grid[r][c] == 'O' {
                 grid[r][c] = '.'
-                var i = c + 1; for ;i < len (grid[0]) && grid[r][i] == '.'; i++ {}
+                var i = c + 1; for ;i < len(grid[0]) && grid[r][i] == '.'; i++ {}
                 grid[r][i - 1] = 'O'
             }
 		})
@@ -60,9 +60,11 @@ func main() {
 		var key = fmt.Sprint(state())
 		if v, found := states[key]; found {
 			var l = cycle - v
-			for cycle <= 1000000000 - l { cycle += l }
+			for cycle < 1000000000 - l { cycle += l }
 			states = map[string]int64{}
-		} else { states[key] = cycle }
+		} else {
+			states[key] = cycle
+		}
 	}
 	var load2 = 0; for _, rock := range state() { load2 += rock }
 	fmt.Println(load1, load2)
