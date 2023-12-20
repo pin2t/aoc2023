@@ -4,14 +4,14 @@ fun main() {
     val workflows = HashMap<String, Workflow>()
     val parts = ArrayList<Map<String, Int>>()
     while (true) {
-        val l = readlnOrNull() ?: break;
+        val l = readlnOrNull() ?: break
         if (l.startsWith('{')) {
             val part = HashMap<String, Int>()
             l.substring(1, l.length - 1).split(',').forEach {
                 part[it.split('=')[0]] = it.split('=')[1].toInt()
             }
             parts.add(part)
-        } else if (!l.isBlank()) {
+        } else if (l.isNotBlank()) {
             val items = l.substring(l.indexOf('{') + 1, l.length - 1).split(',')
             workflows[l.substring(0, l.indexOf('{'))] = Workflow(
                 items.dropLast(1).map {
@@ -47,7 +47,6 @@ fun main() {
         } else if (r.first == "R") {
             continue
         }
-        var matched = true
         var ranges = r.second
         for (rule in workflows[r.first]!!.rules) {
             val part = rule[0]
@@ -69,11 +68,11 @@ fun main() {
             if (leftRanges[part]!!.first <= leftRanges[part]!!.last) {
                 ranges = leftRanges
             } else {
-                matched = false
+                ranges = emptyMap()
                 break
             }
         }
-        if (matched) queue.add(Pair(workflows[r.first]!!.default, ranges))
+        if (!ranges.isEmpty()) queue.add(Pair(workflows[r.first]!!.default, ranges))
     }
     println(listOf(res1, res2))
 }
