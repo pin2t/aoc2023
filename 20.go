@@ -2,11 +2,8 @@ package main
 
 import "os"
 import "bufio"
-import (
-
-"strings"
-"fmt"
-)
+import "strings"
+import "fmt"
 
 type module interface {
 	process(p pulse)
