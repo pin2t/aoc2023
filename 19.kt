@@ -51,22 +51,22 @@ fun main() {
         for (rule in workflows[r.first]!!.rules) {
             val part = rule[0]
             val arg = rule[2].toInt()
-            val matchedRanges = HashMap(ranges); val leftRanges = HashMap(ranges)
+            val matched = HashMap(ranges); val left = HashMap(ranges)
             when (rule[1]) {
                 "<" -> {
-                    matchedRanges[part] = ranges[part]!!.first..<arg
-                    leftRanges[part] = arg..ranges[part]!!.last
+                    matched[part] = ranges[part]!!.first..<arg
+                    left[part] = arg..ranges[part]!!.last
                 }
                 ">" -> {
-                    matchedRanges[part] = (arg + 1)..ranges[part]!!.last
-                    leftRanges[part] = ranges[part]!!.first..arg
+                    matched[part] = (arg + 1)..ranges[part]!!.last
+                    left[part] = ranges[part]!!.first..arg
                 }
             }
-            if (matchedRanges[part]!!.first <= matchedRanges[part]!!.last) {
-                queue.add(Pair(rule[3], matchedRanges))
+            if (matched[part]!!.first <= matched[part]!!.last) {
+                queue.add(Pair(rule[3], matched))
             }
-            if (leftRanges[part]!!.first <= leftRanges[part]!!.last) {
-                ranges = leftRanges
+            if (left[part]!!.first <= left[part]!!.last) {
+                ranges = left
             } else {
                 ranges = emptyMap()
                 break
