@@ -61,7 +61,6 @@ class Day23 {
         processed = BooleanArray(grid.size * width) { false }
         val start = Pair(1, 0); val end = Pair(grid[0].length - 2, grid.size - 1)
         val result1 = longest(start, end, 0);
-        println(result1)
         processed = BooleanArray(grid.size * width) { false }
         processed[start.second * width + start.first] = true
         longest2(Pair(1, 1), end, 1)
