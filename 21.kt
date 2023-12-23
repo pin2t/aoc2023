@@ -1,28 +1,27 @@
 import kotlin.math.pow
 
-val up = Pair(0, -1); val right = Pair(1, 0); val down = Pair(0, 1); val left = Pair(-1, 0)
-val rocks = HashSet<Pair<Int, Int>>()
-var rows = 0
-
-fun reachable(from: Pair<Int, Int>, steps: Int): Int {
-    var reach = HashSet<Pair<Int, Int>>()
-    reach.add(from)
-    for (i in 1..steps) {
-        val next = HashSet<Pair<Int, Int>>()
-        fun move(p: Pair<Int, Int>, dir: Pair<Int, Int>) {
-            if (!rocks.contains(Pair(p.first + dir.first, p.second + dir.second))) {
-                next.add(Pair(p.first + dir.first, p.second + dir.second))
-            }
-        }
-        for (p in reach) {
-            move(p, up); move(p, right); move(p, down); move(p, left)
-        }
-        reach = next
-    }
-    return reach.count { it.first >= 0 && it.second >= 0 && it.first < rows && it.second < rows }
-}
-
 fun main() {
+    val up = Pair(0, -1); val right = Pair(1, 0); val down = Pair(0, 1); val left = Pair(-1, 0)
+    val rocks = HashSet<Pair<Int, Int>>()
+    var rows = 0
+
+    fun reachable(from: Pair<Int, Int>, steps: Int): Int {
+        var reach = HashSet<Pair<Int, Int>>()
+        reach.add(from)
+        for (i in 1..steps) {
+            val next = HashSet<Pair<Int, Int>>()
+            fun move(p: Pair<Int, Int>, dir: Pair<Int, Int>) {
+                if (!rocks.contains(Pair(p.first + dir.first, p.second + dir.second))) {
+                    next.add(Pair(p.first + dir.first, p.second + dir.second))
+                }
+            }
+            for (p in reach) {
+                move(p, up); move(p, right); move(p, down); move(p, left)
+            }
+            reach = next
+        }
+        return reach.count { it.first >= 0 && it.second >= 0 && it.first < rows && it.second < rows }
+    }
     var start = Pair(0, 0)
     while (true) {
         val l = readlnOrNull() ?: break
