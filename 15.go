@@ -3,6 +3,7 @@ package main
 import "strings"
 import "bufio"
 import "fmt"
+import "strconv"
 import "os"
 
 func hash(s string) (result int) {
@@ -25,10 +26,31 @@ func main() {
 	for _, s := range steps {
 		res1 += hash(s)
 		if strings.Contains(s, "=") {
-
-		} else if "-" == s[:-1] {
-			
+			var items = strings.Split(s, "=")
+			var label = items[0]
+			focal, _ := strconv.ParseInt(items[1], 10, 64)
+			var i = hash(label)
+			var j = 0
+			for ;j < len(boxes[i]); j++  {
+				if boxes[i][j].label == label {
+					boxes[i][j].focal = int(focal)
+					break
+				}
+			}
+			if j == len(boxes[i]) { boxes[i] = append(boxes[i], lens{label, int(focal)})}
+		} else if '-' == s[len(s)-1] {
+			var label = s[:(len(s) - 1)]
+			var i = hash(label)
+			for j, l := range boxes[i] {
+				if l.label == label {
+					 copy(boxes[i][j:], boxes[i][(j + 1):])
+                     boxes[i] = boxes[i][:(len(boxes[i]) - 1)]
+					 break
+				}
+			}
 		}
 	}
-	fmt.Println(res1)
+	var result2 int
+	for i, box := range boxes { for j, lens := range box { result2 += (i + 1) * (j + 1) * lens.focal } }
+	fmt.Println(res1, result2)
 }
