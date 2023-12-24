@@ -21,7 +21,7 @@ class Day24 {
                 if (abs(h1.velocity.x) == abs(h2.velocity.x) && abs(h1.velocity.y) == abs(h2.velocity.y))
                     continue  // parallel
                 if (h1.velocity.x * h2.velocity.y == h1.velocity.y * h2.velocity.x) continue
-                var t: Long = ((h2.pos.x - h1.pos.x) * h2.velocity.y + (h1.pos.y - h2.pos.y) * h2.velocity.x) /
+                val t: Long = ((h2.pos.x - h1.pos.x) * h2.velocity.y + (h1.pos.y - h2.pos.y) * h2.velocity.x) /
                         (h1.velocity.x * h2.velocity.y - h1.velocity.y * h2.velocity.x)
                 if (t < 0) continue // in the past for 1
                 val s: Long = ((h1.pos.y - h2.pos.y) + t * h1.velocity.y) / h2.velocity.y
@@ -33,6 +33,12 @@ class Day24 {
             }
         }
         println(result1)
+        // print equations to solve using online solver
+        for (i in 0..10) {
+            val h = hailstones[i]
+            println("(x - ${h.pos.x}) * (${h.velocity.y} - vy) - (y - ${h.pos.y}) * (${h.velocity.x} - vx)")
+            println("(y - ${h.pos.y}) * (${h.velocity.z} - vz) - (z - ${h.pos.z}) * (${h.velocity.y} - vy)")
+        }
     }
 }
 
