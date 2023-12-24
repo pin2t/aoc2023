@@ -18,9 +18,7 @@ class Day24 {
         for (i in 0..<(hailstones.size - 1)) {
             for (j in (i + 1)..<hailstones.size) {
                 val h1 = hailstones[i]; val h2 = hailstones[j]
-                if (abs(h1.velocity.x) == abs(h2.velocity.x) && abs(h1.velocity.y) == abs(h2.velocity.y))
-                    continue  // parallel
-                if (h1.velocity.x * h2.velocity.y == h1.velocity.y * h2.velocity.x) continue
+                if (h1.velocity.x * h2.velocity.y == h1.velocity.y * h2.velocity.x) continue // parallel
                 val t: Long = ((h2.pos.x - h1.pos.x) * h2.velocity.y + (h1.pos.y - h2.pos.y) * h2.velocity.x) /
                         (h1.velocity.x * h2.velocity.y - h1.velocity.y * h2.velocity.x)
                 if (t < 0) continue // in the past for 1
