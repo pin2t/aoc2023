@@ -1,5 +1,3 @@
-import kotlin.math.abs
-
 data class Pos3D(val x: Long, val y: Long, val z: Long)
 data class Hailstone(val pos: Pos3D, val velocity: Pos3D)
 
