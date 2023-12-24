@@ -34,7 +34,7 @@ class Day24 {
         }
         println(result1)
         // print equations to solve using online solver
-        for (i in 0..10) {
+        for (i in 0..5) {
             val h = hailstones[i]
             println("(x - ${h.pos.x}) * (${h.velocity.y} - vy) - (y - ${h.pos.y}) * (${h.velocity.x} - vx)")
             println("(y - ${h.pos.y}) * (${h.velocity.z} - vz) - (z - ${h.pos.z}) * (${h.velocity.y} - vy)")
