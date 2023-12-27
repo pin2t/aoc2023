@@ -1,5 +1,7 @@
 fun gcd(a: Long, b: Long): Long {
-    if (b == 0L) return a
+    if (b == 0L) {
+        return a
+    }
     return gcd(b, a % b)
 }
 
@@ -32,7 +34,7 @@ fun main() {
         }
     }
     val pulses = ArrayDeque<Pair<Boolean, String>>()
-    val sent = HashMap<Boolean, Long>(); 
+    val sent = HashMap<Boolean, Long>()
     sent[false] = 0; sent[true] = 0
     fun send(from: String, to: String, value: Boolean) {
         if (conjunctions.contains(to)) conjunctions[to]!![from] = value
@@ -42,7 +44,7 @@ fun main() {
     for (i in 1..1000) {
         send("button", "broadcaster", false)
         while (pulses.isNotEmpty()) {
-            var pulse = pulses.removeFirst()
+            val pulse = pulses.removeFirst()
             val value = pulse.first
             val to = pulse.second
             if (!modules.contains(to)) continue

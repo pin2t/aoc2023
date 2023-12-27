@@ -14,7 +14,7 @@ type broadcaster struct {
 	outputs []string
 }
 
-func (m *broadcaster) process(p pulse) {
+func (m broadcaster) process(p pulse) {
 	for _, o := range m.outputs {
 		pulse{m.name, o, p.high}.send()
 	}
@@ -25,7 +25,7 @@ type flip struct {
 	on bool
 }
 
-func (m *flip) process(p pulse) {
+func (m flip) process(p pulse) {
 	if !p.high {
 		m.on = !m.on
 		for _, o := range m.outputs {
@@ -34,7 +34,7 @@ func (m *flip) process(p pulse) {
 	}
 }
 
-func (m* flip) reset() {
+func (m flip) reset() {
 	m.on = false
 }
 
@@ -43,7 +43,7 @@ type conjunction struct {
 	pulses map[string]bool
 }
 
-func (m *conjunction) process(p pulse) {
+func (m conjunction) process(p pulse) {
 	m.pulses[p.from] = p.high
 	var result = true
 	for _, p := range m.pulses {
@@ -54,11 +54,11 @@ func (m *conjunction) process(p pulse) {
 	}
 }
 
-func (m* conjunction) reset() {
+func (m conjunction) reset() {
 	for from := range m.pulses { m.pulses[from] = false }
 }
 
-var modules = make(map[string]interface{})
+var modules = make(map[string]module)
 var sentHigh, sentLow = int64(0), int64(0)
 var pulses []pulse
 
@@ -91,33 +91,35 @@ func main() {
 			outputs[i] = strings.Trim(outputs[i], " ")
 		}
 		if items[0] == "broadcaster" {
-			modules[items[0]] = &broadcaster{items[0], outputs}
+			modules[items[0]] = broadcaster{items[0], outputs}
 		} else if items[0][0] == '%' {
-        	modules[name] = &flip{broadcaster{name, outputs}, false}
+        	modules[name] = flip{broadcaster{name, outputs}, false}
 		} else if items[0][0] == '&' {
-			modules[name] = &conjunction{broadcaster{name, outputs},
+			modules[name] = conjunction{broadcaster{name, outputs},
 				make(map[string]bool)}
    		}
 	}
+	fmt.Println(modules)
 	for i := 1; i <= 1000; i++ {
 		pulse{"button", "broadcaster", false}.send()
 		for len(pulses) > 0 {
 			var p = pulses[0]
 			pulses = pulses[1:]
-			if mp, found := modules[p.to]; found {
-				if m, is := mp.(*broadcaster); is { m.process(p) }
-				if m, is := mp.(*flip); is { m.process(p) }
-				if m, is := mp.(*conjunction); is { m.process(p) }
+			fmt.Println(modules[p.to])
+			if m, found := modules[p.to]; found {
+				m.process(p)
 			}
+			fmt.Println(modules[p.to])
 		}
 	}
+	fmt.Println(modules)
 	for _, mi := range modules {
-		if m, is := mi.(*conjunction); is { m.reset() }
-		if m, is := mi.(*flip); is { m.reset() }
+		if m, is := mi.(conjunction); is { m.reset() }
+		if m, is := mi.(flip); is { m.reset() }
 	}
 	var cycles = make(map[string]int64)
 	var press = 1
-	var target = modules["zg"].(*conjunction)
+	var target = modules["zg"].(conjunction)
 	for {
 		pulse{"button", "broadcaster", false}.send()
 		for len(pulses) > 0 {
@@ -134,10 +136,8 @@ func main() {
 					return
 				}
 			}
-			if mp, found := modules[p.to]; found {
-				if m, is := mp.(*broadcaster); is { m.process(p) }
-				if m, is := mp.(*flip); is { m.process(p) }
-				if m, is := mp.(*conjunction); is { m.process(p) }
+			if m, found := modules[p.to]; found {
+				m.process(p)
 			}
 		}
 		press++

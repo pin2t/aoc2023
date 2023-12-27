@@ -6,7 +6,7 @@ val cache = HashMap<Pair<Int, Int>, Long>()
 fun matched(prefix: String): Boolean {
     return prefix.filterIndexed { index, c -> c == springs[index] || springs[index] == '?' }.count() == prefix.length
 }
-fun matches(prefix: String, group: Int): Long {
+fun matches(prefix: String = "", group: Int = 0): Long {
     if (prefix.length > springs.length) return 0
     val key = Pair(prefix.length, group)
     if (cache.contains(key)) return cache[key]!!
@@ -32,11 +32,11 @@ while (scanner.hasNext()) {
     springs = line.split(' ')[0]
     sizes = ArrayList(line.split(' ')[1].split(',').map { it.toInt() }.toList())
     cache.clear()
-    sum += matches("", 0)
+    sum += matches()
     springs = "$springs?$springs?$springs?$springs?$springs"
-    val sizes2 = ArrayList<Int>(sizes);
+    val sizes2 = ArrayList(sizes);
     sizes.addAll(sizes2); sizes.addAll(sizes2); sizes.addAll(sizes2); sizes.addAll(sizes2)
     cache.clear()
-    sum2 += matches("", 0)
+    sum2 += matches()
 }
 println(listOf(sum, sum2))
