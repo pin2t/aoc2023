@@ -25,7 +25,7 @@ func dequeue() (result crucible) {
 	return
 }
 
-func path(canMove func (c crucible, dx int, dy int) bool) int {
+func minLoses(canMove func (c crucible, dx int, dy int) bool) int {
 	var processed = make(map[struct{x, y, dx, dy, straights int}]bool)
 	queue = make([]crucible, 0)
 	enqueue(crucible{0, 0, 1, 0, 0, 0})
@@ -44,19 +44,19 @@ func path(canMove func (c crucible, dx int, dy int) bool) int {
 			enqueue(crucible{nextx, nexty, dir.dx, dir.dy, c.loss + int(grid[c.y][c.x] - '0'), straights})
 		}
 	}
-	return 0
+	panic(fmt.Sprint("path to", []int{len(grid[0]) - 1, len(grid) - 1}, "not found"))
 }
 
 func main() {
 	var scanner = bufio.NewScanner(os.Stdin)
 	for scanner.Scan() { grid = append(grid, scanner.Text()) }
-	var part1 = path(func (c crucible, dx int, dy int) bool {
+	var part1 = minLoses(func (c crucible, dx int, dy int) bool {
 		if c.dx == dx && c.dy == dy { return c.straights < 3 }
 		if c.dx == 1 && dx != -1 || c.dy == 1 && dy != -1 || c.dx == -1 && dx != 1 ||
 			c.dy == -1 && dy != 1 { return true }
 		return false
 	});
-	var part2 = path(func (c crucible, dx int, dy int) bool {
+	var part2 = minLoses(func (c crucible, dx int, dy int) bool {
 		if c.dx == dx && c.dy == dy { return c.straights < 10 }
 		if c.straights >= 4 {
 			if c.dx == 1 && dx != -1 || c.dy == 1 && dy != -1 || c.dx == -1 && dx != 1 ||
