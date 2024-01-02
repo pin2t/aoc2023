@@ -25,7 +25,7 @@ func dequeue() (result crucible) {
 	return
 }
 
-func minLoses(canMove func (c crucible, dx int, dy int) bool) int {
+func minLosses(canMove func (c crucible, dx int, dy int) bool) int {
 	var processed = make(map[struct{x, y, dx, dy, straights int}]bool)
 	queue = make([]crucible, 0)
 	enqueue(crucible{0, 0, 1, 0, 0, 0})
@@ -50,13 +50,13 @@ func minLoses(canMove func (c crucible, dx int, dy int) bool) int {
 func main() {
 	var scanner = bufio.NewScanner(os.Stdin)
 	for scanner.Scan() { grid = append(grid, scanner.Text()) }
-	var part1 = minLoses(func (c crucible, dx int, dy int) bool {
+	var part1 = minLosses(func (c crucible, dx int, dy int) bool {
 		if c.dx == dx && c.dy == dy { return c.straights < 3 }
 		if c.dx == 1 && dx != -1 || c.dy == 1 && dy != -1 || c.dx == -1 && dx != 1 ||
 			c.dy == -1 && dy != 1 { return true }
 		return false
 	});
-	var part2 = minLoses(func (c crucible, dx int, dy int) bool {
+	var part2 = minLosses(func (c crucible, dx int, dy int) bool {
 		if c.dx == dx && c.dy == dy { return c.straights < 10 }
 		if c.straights >= 4 {
 			if c.dx == 1 && dx != -1 || c.dy == 1 && dy != -1 || c.dx == -1 && dx != 1 ||

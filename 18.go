@@ -32,20 +32,18 @@ func main() {
 		var items = strings.Split(scanner.Text(), " ")
 		{
 		var dir, found = directions[items[0]]
-		if !found { panic("invalid directions" + items[0]) }
-		var npart1 = int64(0)
-		npart1, _ = strconv.ParseInt(items[1], 10, 32)
-		pos1 = pos{pos1.x + dir.dx * npart1, pos1.y + dir.dy * npart1}
+		if !found { panic("invalid directions " + items[0]) }
+		n, _ := strconv.ParseInt(items[1], 10, 32)
+		pos1 = pos{pos1.x + dir.dx * n, pos1.y + dir.dy * n}
 		part1corners = append(part1corners, pos1)
-		len1 += npart1
+		len1 += n
 		}
 		{
-		var npart2 = int64(0)
 		var dir, found = part2dirs[items[2][7]]
-		if !found { panic("invalid directions" + items[0]) }
-		npart2, _ = strconv.ParseInt(items[2][2:7], 16, 32)
-		len2 += npart2
-		pos2 = pos{pos2.x + dir.dx * npart2, pos2.y + dir.dy * npart2}
+		if !found { panic("invalid directions " + items[0]) }
+		n, _ := strconv.ParseInt(items[2][2:7], 16, 32)
+		len2 += n
+		pos2 = pos{pos2.x + dir.dx * n, pos2.y + dir.dy * n}
 		part2corners = append(part2corners, pos2)
 		}
 	}
