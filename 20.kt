@@ -80,10 +80,10 @@ fun main() {
             if (conjunctions["&zg"]!!.contains(to)) {
                 if (!cycles.contains(to) && conjunctions["&zg"]!![to]!!) {
                     cycles[to] = press.toLong()
-                }
-                if (cycles.keys == conjunctions["&zg"]!!.keys) {
-                    println(listOf(res1, cycles.values.reduce { acc, c -> lcm(acc, c) }))
-                    return
+                    if (cycles.keys == conjunctions["&zg"]!!.keys) {
+                        println(listOf(res1, cycles.values.reduce { acc, c -> lcm(acc, c) }))
+                        return
+                    }
                 }
             }
             if (!modules.contains(to)) continue
