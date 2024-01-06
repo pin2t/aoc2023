@@ -4,6 +4,7 @@ import "bufio"
 import "os"
 import "fmt"
 import "strconv"
+import "sort"
 
 var reNumber = regexp.MustCompile("\\d+")
 
@@ -46,6 +47,9 @@ func main() {
 		ez, _ := strconv.ParseInt(sn[5], 10, 32)
 		bricks = append(bricks, brick{ int(sx), int(sy), int(sz), int(ex), int(ey), int(ez) })
 	}
+	sort.Slice(bricks, func (i int, j int) bool {
+		return bricks[i].sz < bricks[j].sz
+	})
 	for i, _ := range bricks {
 		for bricks[i].canFall(bricks) {
 			bricks[i] = bricks[i].fall()
