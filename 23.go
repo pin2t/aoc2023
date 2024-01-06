@@ -14,7 +14,7 @@ var seen = make(map[pos]bool)
 
 func maxi(a int, b int) int { if a > b { return a }; return b }
 
-func build(from pos, p pos, l int, dirs map[uint8][]struct {dx, dy int}) {
+func _build(from pos, p pos, l int, dirs map[uint8][]struct {dx, dy int}) {
 	if seen[p] { return }
 	seen[p] = true
 	for _,sp := range splits {
@@ -29,8 +29,17 @@ func build(from pos, p pos, l int, dirs map[uint8][]struct {dx, dy int}) {
 	for _, dir := range dirs[grid[p.y][p.x]] {
 		var next = pos{p.x + dir.dx, p.y + dir.dy}
 		if next.x >= 0 && next.y >= 0 && next.x < len(grid[p.y]) && next.y < len(grid) && grid[next.y][next.x] != '#' {
-			build(from, next, l + 1, dirs)
+			_build(from, next, l + 1, dirs)
 		}
+	}
+}
+
+func build(dirs map[uint8][]struct {dx, dy int}) {
+	graph = make(map[pos]map[pos]int)
+	seen = make(map[pos]bool)
+	for _, p := range splits {
+		seen = make(map[pos]bool)
+		_build(p, p, 0, dirs)
 	}
 }
 
@@ -52,16 +61,21 @@ var part2dirs = map[uint8][]struct {dx, dy int} {
 
 var start, end pos
 
-func longest(p pos) (result int) {
+func _longest(p pos) (result int) {
 	if p == end { return 0 }
 	if seen[p] { return -1000000000 }
 	seen[p] = true
     result = -1000000000
 	for next, l := range graph[p] {
-		result = maxi(result, l + longest(next))
+		result = maxi(result, l + _longest(next))
 	}
 	seen[p] = false
 	return
+}
+
+func longest() (result int) {
+	seen = make(map[pos]bool)
+	return _longest(start)
 }
 
 func main() {
@@ -95,18 +109,8 @@ func main() {
 			}
 		}
 	}
-	for _, p := range splits {
-		seen = make(map[pos]bool)
-		build(p, p, 0, part1dirs)
-	}
-	seen = make(map[pos]bool)
-	fmt.Println(longest(start))
-	graph = make(map[pos]map[pos]int)
-	seen = make(map[pos]bool)
-	for _, p := range splits {
-		seen = make(map[pos]bool)
-		build(p, p, 0, part2dirs)
-	}
-	seen = make(map[pos]bool)
-	fmt.Println(longest(start))
+	build(part1dirs)
+	fmt.Println(longest())
+	build(part2dirs)
+	fmt.Println(longest())
 }
