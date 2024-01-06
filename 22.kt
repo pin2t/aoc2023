@@ -32,9 +32,7 @@ fun main() {
     for (i in 0..<bricks.size) {
         val save = bricks[i]
         bricks[i] = Brick(Triple(-1, -1, -1), Triple(-1, -1, -1))
-        if (i == bricks.size - 1) {
-            result1++
-        } else if (!bricks.subList(i + 1, bricks.size).any { it.canFall }) {
+        if (!bricks.subList(i + 1, bricks.size).any { it.canFall }) {
             result1++
         } else {
             val fall = ArrayList(bricks)
