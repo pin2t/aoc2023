@@ -6,6 +6,10 @@ Kotlin script files
 
 ```kotlin 01.kts < inputs/01.txt```
 
+day 23 kotlin script solution requires stack increase
+
+```kotlin -J-Xss2m 23.kts < inputs/23.txt```
+
 Kotlin files (kotlin native compiler is used and should be installed)
 
 ```./kotlin-run 16.kt < inputs/16.txt```

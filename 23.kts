@@ -68,4 +68,4 @@ class Day23 {
     }
 }
 
-fun main() { Day23().run() }
+Day23().run()
