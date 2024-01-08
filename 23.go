@@ -110,7 +110,7 @@ func main() {
 		}
 	}
 	build(part1dirs)
-	fmt.Println(longest())
+	var part1 = longest()
 	build(part2dirs)
-	fmt.Println(longest())
+	fmt.Println(part1, longest())
 }
