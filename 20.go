@@ -128,7 +128,7 @@ func main() {
 			}
 		}
 	}
-	fmt.Println(sentHigh * sentLow)
+	var part1 = sentHigh * sentLow
 	for _, mi := range modules {
 		if m, is := mi.(*conjunction); is { m.reset() }
 		if m, is := mi.(*flip); is { m.reset() }
@@ -160,7 +160,7 @@ func main() {
 						for _, c := range cycles {
 							result = lcm(result, c)
 						}
-						fmt.Println(result)
+						fmt.Println(part1, result)
 						return
 					}
 				}
